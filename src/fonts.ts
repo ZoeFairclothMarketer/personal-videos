@@ -1,4 +1,5 @@
 import "@fontsource/archivo-black";
+import "@fontsource/inter/800.css";
 import { staticFile } from "remotion";
 
 // Drop ClashDisplay-Bold.woff2 into public/fonts/ to use the real brand face.
@@ -15,4 +16,5 @@ export const loadBrandFonts = async () => {
     // fall back to Archivo Black
   }
   await document.fonts.load("700 80px 'Archivo Black'").catch(() => undefined);
+  await document.fonts.load("800 64px 'Inter'").catch(() => undefined);
 };

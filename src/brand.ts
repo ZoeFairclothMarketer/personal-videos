@@ -11,6 +11,8 @@ export const colors = {
 // Archivo Black is the bundled fallback so renders never break.
 export const fonts = {
   display: "'Clash Display', 'Archivo Black', sans-serif",
+  // Hook card: native TikTok / Reels text look.
+  native: "'Inter', sans-serif",
 };
 
 export const VIDEO = {
