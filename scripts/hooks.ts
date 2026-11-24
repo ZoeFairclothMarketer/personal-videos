@@ -1,16 +1,17 @@
 // Prints candidate hooks from the Neon hook bank as JSON.
 // Your own proven hooks (origin='mine') rank first, then scraped outliers.
+// Uses Neon's serverless driver (queries over HTTPS), so it works through the
+// cloud session's proxy. Run with NODE_USE_ENV_PROXY=1 in cloud sessions.
 // Run: npx tsx scripts/hooks.ts            (all niches)
 //      npx tsx scripts/hooks.ts "crypto marketing"
-import pg from "pg";
+import { neon } from "@neondatabase/serverless";
 import { env } from "./lib";
 
 const niche = process.argv[2] ?? null;
 
 const main = async () => {
-  const client = new pg.Client({ connectionString: env("DATABASE_URL") });
-  await client.connect();
-  const { rows } = await client.query(
+  const sql = neon(env("DATABASE_URL"));
+  const rows = await sql.query(
     `select hook_text, hook_pattern, hook_type, niche, origin, views, outlier_ratio, my_retention
        from hooks
       where ($1::text is null or niche = $1)
@@ -21,7 +22,6 @@ const main = async () => {
       limit 60`,
     [niche],
   );
-  await client.end();
   console.log(JSON.stringify(rows, null, 2));
 };
 

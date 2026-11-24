@@ -54,6 +54,13 @@ hook, and deliver them to Zoe's "Content Previews" Google Drive folder.
 3. `npx tsx scripts/render.ts <id> --final <n>` then
    `npx tsx scripts/send.ts <id> --final <n>`.
 
+## Cloud sessions: network
+
+Network traffic goes through a proxy. Prefix every script that touches the
+network (fetch-job, setup-whisper, hooks, send) with `NODE_USE_ENV_PROXY=1`,
+e.g. `NODE_USE_ENV_PROXY=1 npx tsx scripts/hooks.ts`. If a host is blocked,
+request it via the environment's allowed hosts rather than working around it.
+
 ## Setup on a fresh session
 
 - `npm ci`

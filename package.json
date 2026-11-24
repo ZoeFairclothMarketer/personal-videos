@@ -11,6 +11,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1176.0",
     "@fontsource/archivo-black": "^5.3.0",
+    "@neondatabase/serverless": "^1.2.1",
     "@remotion/bundler": "^4.0.546",
     "@remotion/captions": "^4.0.546",
     "@remotion/cli": "4.0.546",
@@ -20,7 +21,6 @@
     "@remotion/media": "^4.0.546",
     "@remotion/media-utils": "^4.0.546",
     "@remotion/renderer": "^4.0.546",
-    "pg": "^8.23.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "remotion": "4.0.546",
@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.546",
-    "@types/pg": "^8.23.1",
     "@types/react": "19.3.0",
     "@types/web": "0.0.166",
     "eslint": "10.15.0",
