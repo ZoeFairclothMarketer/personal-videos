@@ -3,7 +3,7 @@
 You are editing short vertical videos (Reels, TikTok, X) for Zoe. Raw clips and a
 brain-dump voice note arrive in the footage bucket under `jobs/<YYYY-MM-DD>/`.
 Your job: turn them into 5 versions of one edit, each with a different on-screen
-hook, and send them to the content group on Telegram.
+hook, and deliver them to Zoe's "Content Previews" Google Drive folder.
 
 ## Rules (never break these)
 
@@ -42,7 +42,8 @@ hook, and send them to the content group on Telegram.
 6. `npx tsx scripts/render.ts <id>` renders 5 previews at 720p into `out/<id>/`.
    Look at a frame of at least one (`ffmpeg -ss 1 -i <file> -frames:v 1 f.png`)
    to check the hook card and captions are readable and not cut off.
-7. `npx tsx scripts/send.ts <id>` posts the 5 previews to the content group.
+7. `npx tsx scripts/send.ts <id>` uploads the 5 previews to the bucket and n8n
+   copies them into the "Content Previews" Drive folder.
 8. Write `public/jobs/<id>/notes.md`: the 5 hooks, source pattern and why.
 
 ## When Zoe picks one ("3, tighter start")
