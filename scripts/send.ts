@@ -3,10 +3,10 @@
 // "Previews to Drive" workflow, which copies them into Drive. No Google keys needed here.
 //   Previews: npx tsx scripts/send.ts 2026-11-24
 //   Final:    npx tsx scripts/send.ts 2026-11-24 --final 3
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { env, jobArg, jobDir } from "./lib";
+import { jobArg, jobDir, makeS3 } from "./lib";
 
 const job = jobArg();
 const dir = jobDir(job);
@@ -14,12 +14,7 @@ const finalIdx = process.argv.includes("--final") ? Number(process.argv[process.
 const Bucket = process.env.FOOTAGE_BUCKET ?? "webzero-content-footage";
 const WEBHOOK = process.env.PREVIEWS_WEBHOOK ?? "https://n8n.apps.joinwebzero.com/webhook/wz-previews-ready-4m8x2c";
 
-const s3 = new S3Client({
-  endpoint: env("AWS_ENDPOINT_URL_S3"),
-  region: env("AWS_REGION"),
-  forcePathStyle: true,
-  credentials: { accessKeyId: env("AWS_ACCESS_KEY_ID"), secretAccessKey: env("AWS_SECRET_ACCESS_KEY") },
-});
+const s3 = makeS3();
 
 // Drive file names: "2026-11-24 hook 3 - Bought a bus on Facebook.mp4"
 const safe = (s: string) => s.replace(/[\\/:*?"<>|]/g, "").slice(0, 60).trim();

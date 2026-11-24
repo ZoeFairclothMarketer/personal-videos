@@ -1,4 +1,6 @@
+import { S3Client } from "@aws-sdk/client-s3";
 import { execFileSync } from "node:child_process";
+import https from "node:https";
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 
@@ -28,3 +30,14 @@ export const ffmpeg = (args: string[]) =>
 
 export const isVideo = (f: string) => /\.(mp4|mov|m4v|webm)$/i.test(f);
 export const isAudio = (f: string) => /\.(ogg|oga|m4a|mp3|wav)$/i.test(f);
+
+// Footage bucket client. Uses Node's global HTTPS agent so that, when run with
+// NODE_USE_ENV_PROXY=1, requests go through HTTPS_PROXY (needed in cloud sessions).
+export const makeS3 = () =>
+  new S3Client({
+    endpoint: env("AWS_ENDPOINT_URL_S3"),
+    region: env("AWS_REGION"),
+    forcePathStyle: true,
+    credentials: { accessKeyId: env("AWS_ACCESS_KEY_ID"), secretAccessKey: env("AWS_SECRET_ACCESS_KEY") },
+    requestHandler: { httpsAgent: https.globalAgent },
+  });

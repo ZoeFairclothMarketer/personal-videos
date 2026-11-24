@@ -1,20 +1,15 @@
 // Downloads jobs/<job>/ from the footage bucket and normalises it for editing.
 // Run: npx tsx scripts/fetch-job.ts 2026-11-24
-import { GetObjectCommand, ListObjectsV2Command, S3Client } from "@aws-sdk/client-s3";
+import { GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { env, ffmpeg, isAudio, isVideo, jobArg, jobDir } from "./lib";
+import { ffmpeg, isAudio, isVideo, jobArg, jobDir, makeS3 } from "./lib";
 
 const job = jobArg();
 const dir = jobDir(job);
 const rawDir = path.join(dir, "raw");
 
-const s3 = new S3Client({
-  endpoint: env("AWS_ENDPOINT_URL_S3"),
-  region: env("AWS_REGION"),
-  forcePathStyle: true,
-  credentials: { accessKeyId: env("AWS_ACCESS_KEY_ID"), secretAccessKey: env("AWS_SECRET_ACCESS_KEY") },
-});
+const s3 = makeS3();
 const Bucket = process.env.FOOTAGE_BUCKET ?? "webzero-content-footage";
 
 const main = async () => {
